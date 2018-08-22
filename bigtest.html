@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        /* Set the size of the div element that contains the map */
+        #map {
+            height: 400px; /* The height is 400 pixels */
+            width: 100%; /* The width is the width of the web page */
+        }
+    </style>
+</head>
+<body>
+    <h3>My Google Maps Demo</h3>
+    <!--The div element for the map -->
+    <div id="map"></div>
+    <script>
+// Initialize and add the map
+function initMap() {
+  // The location of Uluru
+  var locations = [
+      ['Uganda', 1.0,32.0, 4],
+      ['Ethiopia', 8.0,38.0, 5],
+      ['Haiti', 19.0,-72.41666666, 2],
+      ['Democratic Republic of Congo', -1.0,15.0],
+      ['Cambodia', 13.0,105.0, 4],
+      ['India', 20.0,77.0],
+      ['Venezuela', 8.0,-66.0],
+      ['Palestine', 31.9,35.2]
+    ];
+
+var locationInfo = [
+    "<h1>Uganda</h1><p>This is Uganda</p><p>hi</p>", "ethiopia info", "haiti info","congo info", "cambodia info", "india info", "Venezuela info", "Palestine info"
+]
+
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 2,
+      center: new google.maps.LatLng(1.0,32.0),
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    });
+
+    var infowindow = new google.maps.InfoWindow();
+
+    var marker, i;
+
+    for (i = 0; i < locations.length; i++) {
+      marker = new google.maps.Marker({
+        position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+        map: map
+      });
+
+      google.maps.event.addListener(marker, 'click', (function(marker, i) {
+        return function() {
+          infowindow.setContent(locations[i][0]);
+          infowindow.open(map, marker);
+          var country = locations[i][0];
+          document.getElementById("info").innerHTML = locationInfo[i];
+        }
+      })(marker, i));
+}}
+    </script>
+    <!--Load the API from the specified URL
+    * The async attribute allows the browser to render the page while the API loads
+    * The key parameter will contain your own API key (which is not needed for this tutorial)
+    * The callback parameter executes the initMap() function
+  -->
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLt5RI34putGZNhgQha-2ehMYzQTforMo&callback=initMap">
+    </script>
+    <div id="info">
+    </div>
+</body>
+</html>
